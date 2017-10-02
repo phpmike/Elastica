@@ -144,7 +144,10 @@ class Http extends AbstractTransport
         $response->setTransferInfo(curl_getinfo($conn));
 
         if ($response->hasError()) {
-            throw new ResponseException($request, $response);
+            $error = $response->getError();
+            if($response->getError()['type'] != 'index_not_found_exception'){
+                throw new \Exception(sprintf('"%s" : %s', $error['type'], $error['reason']));
+            }
         }
 
         if ($response->hasFailedShards()) {
