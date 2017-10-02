@@ -47,6 +47,7 @@ class ActionException extends BulkException
         $error = $response->getError();
         $opType = $response->getOpType();
         $data = $response->getData();
+        $errorString = var_export($error, true);
 
         $path = '';
         if (isset($data['_index'])) {
@@ -58,7 +59,7 @@ class ActionException extends BulkException
         if (isset($data['_id'])) {
             $path .= '/'.$data['_id'];
         }
-        $message = "$opType: $path caused $error";
+        $message = "$opType: $path caused $errorString";
 
         return $message;
     }
